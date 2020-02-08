@@ -23,76 +23,71 @@ class FlightSegment:
     """ A FlightSegment offered by the airline system.
 
     === Public Attributes ===
-    flight_id:
-        a unique identifier for this flight.
-    time:
-        a tuple containing the departure and arrival time of a segment.
-    fare_cost:
-        the base cost of the fare (i.e. $0.1225/km).
     seat_capacity:
         the class of seat and total number of seats available on a specific
         segment.
     seat_availability:
         the class of seat and number of seats still available on a specific
         segment.
-    flight_duration:
-        the amount of time it takes for this flight segment to complete.
-    flight_length:
-        the number of kilometres between the dep_loc and arr_loc.
-    dep_loc:
-        the unique 3-digit (IATA) airport identifier of where the flight
-        segment is departing (i.e. leaving from).
-    arr_loc:
-        the unique 3-digit (IATA) airport identifier of where the flight
-        segment is landing (i.e. arriving to).
-    long_lat:
-        a tuple of tuples, containing the longitude and latitude of the
-        departure and arrival destinations.
 
     === Representation Invariants ===
-        -  flight_duration >= 0
-        -  flight_length >= 0
-        -  the value for seat_available.keys() must all be >= 0
+        -  the keys in seat_availability.keys() must all be >= 0
            (i.e. they cannot be negative)
-        -  dep_loc and arr_loc must be exactly three characters [A-Z]
-           and are assumed to be valid and distinct IATA airport codes.
     """
 
     # === Private Attributes ===
+    # _flight_id:
+    #     a unique identifier for this flight.
+    # _time:
+    #     a tuple containing the departure and arrival time of a segment.
     # _manifest:
     #      a list of tuples containing all customers' ID and type of flight
     #      class that they've taken (e.g. economy).
+    # _base_fare_cost:
+    #     the base cost of the fare (e.g., $0.1225/km).
+    # _flight_duration:
+    #     the total time it takes for the flight segment to complete.
+    # _flight_length:
+    #     the number of kilometres between the departure and arrival locations.
+    # _dep_loc:
+    #     the unique 3-digit (IATA) airport identifier of where the flight
+    #     segment is departing (i.e. leaving from).
+    # _arr_loc:
+    #     the unique 3-digit (IATA) airport identifier of where the flight
+    #     segment is landing (i.e. arriving to).
+    # _long_lat:
+    #     a tuple of tuples, containing the longitude and latitude of the
+    #     departure and arrival destinations.
+    #
+    # === Representation Invariants ===
+    #     -  _flight_length >= 0
+    #     -  _dep_loc and _arr_loc must be exactly three characters [A-Z]
+    #        and are assumed to be valid and distinct IATA airport codes.
 
-    flight_id: str
-    time: Tuple[datetime.datetime, datetime.datetime]
-    fare_cost: float
     seat_capacity: Dict[str, int]  # str: class, int: seats_available
     seat_availability: Dict[str, int]  # str: class, int: seats_available
-    flight_duration: Optional[datetime.time]  # to allow for None at __init__
-    flight_length: float
-    dep_loc: str
-    arr_loc: str
-    long_lat: Tuple[Tuple[float, float], Tuple[float, float]]
+    _flight_id: str
+    _time: Tuple[datetime.datetime, datetime.datetime]
+    _base_fare_cost: float
+    _flight_duration: datetime.time
+    _flight_length: float
+    _dep_loc: str
+    _arr_loc: str
+    _long_lat: Tuple[Tuple[float, float], Tuple[float, float]]
     _manifest: List[Tuple[int, str]]  # (customer_id, seat_type)
 
     def __init__(self, fid: str, dep: datetime.datetime, arr: datetime.datetime,
-                 cost: float, length: float, dep_loc: str, arr_loc: str,
+                 base_cost: float, length: float, dep_loc: str, arr_loc: str,
                  long_lat: Tuple[Tuple[float, float],
                                  Tuple[float, float]]) -> None:
         """ Initialize a FlightSegment object based on the parameters specified.
         """
 
-        """
-        The base cost of the flight is calculated at a rate of $0.2325/km. This
-        cost will change depending on their booking class (i.e. utilizing the
-        CLASS_MULTIPLIER).
-        """
-
         # TODO
 
     def __repr__(self) -> str:
-        return ("[" + str(self.flight_id) + "]:" + str(self.dep_loc) + "->" +
-                str(self.arr_loc))
+        return ("[" + str(self._flight_id) + "]:" + str(self._dep_loc) + "->" +
+                str(self._arr_loc))
 
     def get_length(self) -> float:
         """ Returns the length, in KMs, of this flight segment. """
@@ -131,8 +126,8 @@ class FlightSegment:
 
         # TODO
 
-    def get_fare_price(self) -> float:
-        """ Returns the base fair price for this flight segment. """
+    def get_base_fare_cost(self) -> float:
+        """ Returns the base fare cost for this flight segment. """
 
         # TODO
 
