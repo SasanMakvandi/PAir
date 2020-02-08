@@ -11,11 +11,10 @@ any changes, are expressly prohibited.
 All of the files in this directory and all subdirectories are:
 Copyright (c) 2020 Bogdan Simion, Michael Liut, Paul Vrbik
 """
-import datetime
 from typing import List
 from customer import Customer
 from flight import FlightSegment
-from time import sleep
+# from time import sleep
 
 
 class Filter:

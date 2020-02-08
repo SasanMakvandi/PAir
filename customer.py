@@ -54,10 +54,10 @@ class Customer:
         the customer's nationality (there are no dual citizens).
     all_flight_costs:
         the sum of all flight costs this customer has taken over
-        the course of their existence. 
+        the course of their existence.
 
     Representation Invariants:
-        - trips are stored per customer forever. 
+        - trips are stored per customer forever.
         - miles/status are accumulated and never lost.
     """
 

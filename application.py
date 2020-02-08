@@ -19,9 +19,18 @@ from customer import Customer
 from flight import Trip, FlightSegment
 from visualizer import Visualizer
 
+#############################################
+# DO NOT DECLARE ANY OTHER GLOBAL VARIABLES!
+#############################################
+
 # AIRPORT_LOCATIONS: global mapping of an airport's IATA with their respective
 #                    longitude and latitude positions.
+# NOTE: This is used for our testing purposes, so it has to be populated in
+# create_airports(), but you are welcome to use it as you see fit.
 AIRPORT_LOCATIONS = {}
+
+# DEFAULT_BASE_COST: Default rate per km for the base cost of a flight segment.
+DEFAULT_BASE_COST = 0.1225
 
 
 def import_data(file_airports: str, file_customers: str, file_segments: str,

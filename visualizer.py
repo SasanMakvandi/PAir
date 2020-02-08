@@ -138,8 +138,8 @@ class Visualizer:
             -> List[FlightSegment]:
         """ Handle any user events triggered through the PyGame window.
             The <drawables> are the objects currently displayed, while the
-            <customers> list contains all customers from the input data.
-            Returns a new list of FlightSegment, according to user input actions.
+            <customers> list contains all customers from the input data. Returns 
+            a new list of FlightSegment, according to user input actions.
         """
         new_drawables = drawables
         for event in pygame.event.get():
