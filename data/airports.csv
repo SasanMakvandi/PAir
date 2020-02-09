@@ -263,7 +263,6 @@ IND,Indianapolis International Airport,-86.294403,39.7173
 ISB,New Islamabad International Airport,72.851613,33.560713
 ISE,Isparta Suleyman Demirel Airport,30.36840057,37.85540009
 ISL,Istanbul Airport,28.8146,40.976898
-IST,Istanbul Airport,28.751944,41.275278
 ITM,Osaka International Airport,135.4380035,34.78549957
 JAN,Jackson-Medgar Wiley Evers International Airport,-90.07589722,32.31119919
 JAX,Jacksonville International Airport,-81.68789673,30.49410057
@@ -271,8 +270,6 @@ JED,King Abdulaziz International Airport,39.156502,21.6796
 JFK,John F Kennedy International Airport,-73.77890015,40.63980103
 JLN,Joplin Regional Airport,-94.49829865,37.15179825
 JNB,OR Tambo International Airport,28.246,-26.1392
-JNB,OR Tambo International Airport,28.246,-26.1392
-JNB,O R Tambo International,28.246,-26.1392
 JUB,Juba International Airport,31.60110092,4.872010231
 KAN,Mallam Aminu International Airport,8.52462,12.0476
 KBP,Boryspil International Airport,30.8946991,50.34500122
@@ -503,7 +500,7 @@ SPC,La Palma Airport,-17.7556,28.626499
 SPI,Abraham Lincoln Capital Airport,-89.67790222,39.84410095
 SPS,Sheppard Air Force Base-Wichita Falls Municipal Airport,-98.491898,33.9888
 SRQ,Sarasota Bradenton International Airport,-82.55439758,27.39539909
-SSA,Deputado Luiz Eduardo MagalhÃ£es International Airport,-38.32249832,-12.9086113
+SSA,Deputado Luiz Eduardo Magalhaes International Airport,-38.32249832,-12.9086113
 SSC,Shaw Air Force Base,-80.47059631,33.97269821
 STL,St Louis Lambert International Airport,-90.370003,38.748697
 STN,London Stansted Airport,0.234999999,51.88499832
@@ -546,7 +543,7 @@ TOL,Toledo Express Airport,-83.80780029,41.58679962
 TOS,Tromso Airport,18.91889954,69.6832962
 TPA,Tampa International Airport,-82.53320313,27.97550011
 TPE,Taiwan Taoyuan International Airport,121.233002,25.0777
-TRD,Trondheim Airport VÃ¦rnes,10.9239998,63.4578018
+TRD,Trondheim Airport,10.9239998,63.4578018
 TRI,Tri-Cities Regional TN/VA Airport,-82.407401,36.475201
 TRN,Turin Airport,7.64963,45.200802
 TRV,Trivandrum International Airport,76.92009735,8.48211956
