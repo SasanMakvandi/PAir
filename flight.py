@@ -89,7 +89,8 @@ class FlightSegment:
         self._dep_loc = dep_loc
         self._arr_loc = arr_loc
         self._long_lat = long_lat
-        self._flight_duration = datetime.time() #idk
+        self._flight_duration = datetime.time(arr.hour-dep.hour,
+                                              arr.minute-dep.minute)
         self._flight_length = 0 #idk
         self._manifest = []
 
