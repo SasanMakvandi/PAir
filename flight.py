@@ -83,7 +83,15 @@ class FlightSegment:
         """ Initialize a FlightSegment object based on the parameters specified.
         """
 
-        # TODO
+        self._flight_id = fid
+        self._time = (dep, arr)
+        self._base_fare_cost = (base_cost * length)
+        self._dep_loc = dep_loc
+        self._arr_loc = arr_loc
+        self._long_lat = long_lat
+        self._flight_duration = datetime.time() #idk
+        self._flight_length = 0 #idk
+        self._manifest = []
 
     def __repr__(self) -> str:
         return ("[" + str(self._flight_id) + "]:" + str(self._dep_loc) + "->" +
@@ -92,44 +100,44 @@ class FlightSegment:
     def get_length(self) -> float:
         """ Returns the length, in KMs, of this flight segment. """
 
-        # TODO
+        return self._flight_length
 
     def get_times(self) -> Tuple[datetime.datetime, datetime.datetime]:
         """ Returns the (departure, arrival) time of this flight segment. """
 
-        # TODO
+        return self._time
 
     def get_arr(self) -> str:
         """ Returns the arrival airport (i.e. the IATA). """
 
-        # TODO
+        return self._arr_loc
 
     def get_dep(self) -> str:
         """ Returns the departure airport (i.e. the IATA). """
 
-        # TODO
+        return self._dep_loc
 
     def get_fid(self) -> str:
         """ Returns the flight identifier. """
 
-        # TODO
+        return self._flight_id
 
     def get_long_lat(self) -> Tuple[Tuple[float, float], Tuple[float, float]]:
         """ Returns the longitude and latitude of a FlightSegment,
             specifically like this: ((LON1, LAT1), (LON2, LAT2)).
         """
 
-        # TODO
+        return self._long_lat
 
     def get_duration(self) -> datetime.time:
         """ Returns the duration of the flight. """
 
-        # TODO
+        return self.get_duration()
 
     def get_base_fare_cost(self) -> float:
         """ Returns the base fare cost for this flight segment. """
 
-        # TODO
+        return self._base_fare_cost
 
     def check_manifest(self, cid: int) -> bool:
         """ Returns True if a certain customer <cid> has booked a seat
@@ -188,17 +196,20 @@ class Trip:
                  flight_segments: List[FlightSegment]) -> None:
         """ Initializes a trip object given the specified parameters. """
 
-        # TODO
+        self.reservation_id = rid
+        self.customer_id = cid
+        self.trip_departure = trip_date
+        self._flights = flight_segments
 
     def get_flight_segments(self) -> List[FlightSegment]:
         """ Returns a list of all Flight Segments part of this booking. """
 
-        # TODO
+        return self._flights
 
     def get_reservation_id(self) -> str:
         """ Returns this Trip's Reservation ID. """
 
-        # TODO
+        return self.reservation_id
 
     def get_in_flight_time(self) -> int:
         """ Returns the amount of time (in minutes) the trip is spent in

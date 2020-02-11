@@ -45,23 +45,24 @@ class Airport:
                  location: Tuple[float, float]) -> None:
         """ Initialize a new Airport object with the given parameters. """
 
-        # TODO
+        self.name = name
+        self._map_location = location
+        self._airport_id = aid
 
     def get_airport_id(self) -> str:
         """ Returns the unique IATA location identifier for this airport. """
 
-        # TODO
+        return self._airport_id
 
     def get_name(self) -> str:
         """ Returns the airport's name. """
 
-        # TODO
+        return self.name
 
     def get_location(self) -> Tuple[float, float]:
         """ Returns the airport's location <longitude, latitude>. """
 
-        # TODO
-
+        return self._map_location
 
 if __name__ == '__main__':
     import python_ta
