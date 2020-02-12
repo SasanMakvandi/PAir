@@ -81,17 +81,38 @@ class FlightSegment:
                  long_lat: Tuple[Tuple[float, float],
                                  Tuple[float, float]]) -> None:
         """ Initialize a FlightSegment object based on the parameters specified.
+        >>> a = FlightSegment('AC100', datetime.datetime(2020, 2, 11, 16,40,00 ), datetime.datetime(2020, 2, 11, 17,40,00), 1.00, 200, 'YYZ', 'IRC', ((1,2), (2,3)))
+        >>> a.get_duration()
+        datetime.time(1, 0)
+        >>> b = FlightSegment('AC100', datetime.datetime(2020, 2, 11, 16,40,00 ), datetime.datetime(2020, 2, 11, 22,40,00), 1.00, 200, 'YYZ', 'IRC', ((1,2), (2,3)))
+        >>> b.get_duration()
+        datetime.time(6, 0)
+        >>> c = FlightSegment('AC100', datetime.datetime(2020, 2, 11, 22, 40, 00), datetime.datetime(2020, 2, 12, 2, 40, 00),1.00, 200, 'YYZ', 'IRC', ((1,2), (2,3)))
+        >>> c.get_duration()
+        datetime.time(4, 0)
+        >>> d = FlightSegment('AC100', datetime.datetime(2020, 2, 11, 18, 20, 00), datetime.datetime(2020, 2, 12, 2, 40, 00),1.00, 200, 'YYZ', 'IRC', ((1,2), (2,3)))
+        >>> d.get_duration()
+        datetime.time(8, 20)
+        >>> d.get_base_fare_cost()
+        200.0
         """
-
+        self.seat_capacity = AIRPLANE_CAPACITY
         self._flight_id = fid
         self._time = (dep, arr)
         self._base_fare_cost = (base_cost * length)
         self._dep_loc = dep_loc
         self._arr_loc = arr_loc
         self._long_lat = long_lat
-        self._flight_duration = datetime.time(arr.hour-dep.hour,
-                                              arr.minute-dep.minute)
-        self._flight_length = 0 #idk
+        if arr.day == dep.day: #if they are in the same day
+            self._flight_duration =\
+                datetime.time(arr.hour-dep.hour, abs(arr.minute-dep.minute),
+                              abs(arr.second - dep.second))
+        if arr.day > dep.day: #if they are in two different days
+            self._flight_duration = \
+                datetime.time((24 - dep.hour) +
+                              arr.hour, abs(arr.minute - dep.minute),
+                              abs(arr.second - dep.second))
+        self._flight_length = length
         self._manifest = []
 
     def __repr__(self) -> str:
@@ -133,7 +154,7 @@ class FlightSegment:
     def get_duration(self) -> datetime.time:
         """ Returns the duration of the flight. """
 
-        return self.get_duration()
+        return self._flight_duration
 
     def get_base_fare_cost(self) -> float:
         """ Returns the base fare cost for this flight segment. """
