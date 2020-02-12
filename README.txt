@@ -11,6 +11,23 @@ Objects:
 	2. Airport:
 		-id: three character identifier for each airport
 		-map_location: the cordinates for this very speicific airport
+	3. Flight Segments:
+		-Tracks: .departure and arival airpot
+			 .manifest
+			 .seat avaliability
+			 .bare cost
+		-flight_id:
+			.represents and alpha-numeric string distinguishig different flights
+	4. Trip:
+		-several or one flight segment
+		-reservation id
+		-customer_id
+		-flights: every flight segment id
+		-if a flight cannot be booked within the time frame, the whole trip gets canceled
+	5. Filter:
+		-criteration among all the trips and flights
+	6. Visualizer and application don't really concern me
+
 		
 
 

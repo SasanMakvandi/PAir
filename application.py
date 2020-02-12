@@ -73,7 +73,8 @@ def create_customers(log: List[List[str]]) -> Dict[int, Customer]:
         - The <log> list contains the input data in the correct format.
     """
 
-    # TODO
+
+
 
 
 def create_flight_segments(log: List[List[str]])\
@@ -84,8 +85,13 @@ def create_flight_segments(log: List[List[str]])\
     Precondition:
     - The <log> list contains the input data in the correct format.
     """
+    final = {}
+    for line in log:
+        a = line[3]
+        dep = line[4]
+        arr = line[5]
+        final[int(a[:4]), int(a[5:7]), int(a[8:])] = FlightSegment(line[0], datetime.datetime(int(a[:4]),int(a[])))
 
-    # TODO
 
 
 def create_airports(log: List[List[str]]) -> List[Airport]:
@@ -94,9 +100,14 @@ def create_airports(log: List[List[str]]) -> List[Airport]:
 
     Precondition:
     - The <log> list contains the input data in the correct format.
+    >>> a = import_data('data/airports.csv', 'data/segments.csv', 'data/customers.csv', 'data/trips.csv')
+    >>> create_airports(a[0])
+    []
     """
-
-    # TODO
+    final = []
+    for line in log:
+        final.append(Airport(line[0],line[1], (float(line[2]), float(line[3]))))
+    return final
 
 
 def load_trips(log: List[List[str]], customer_dict: Dict[int, Customer],
