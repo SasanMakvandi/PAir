@@ -31,6 +31,8 @@ AIRPORT_LOCATIONS = {}
 
 # DEFAULT_BASE_COST: Default rate per km for the base cost of a flight segment.
 DEFAULT_BASE_COST = 0.1225
+MONTH_DAYS = {1: 31, 2: 28, 3: 31, 4: 30, 5: 31, 6: 30, 7: 31, 8: 31, 9: 30,
+              10: 31, 11: 30, 12: 31}
 
 
 def import_data(file_airports: str, file_customers: str, file_segments: str,
@@ -73,7 +75,7 @@ def create_customers(log: List[List[str]]) -> Dict[int, Customer]:
         - The <log> list contains the input data in the correct format.
     """
 
-
+    #TODO
 
 
 
@@ -84,14 +86,55 @@ def create_flight_segments(log: List[List[str]])\
 
     Precondition:
     - The <log> list contains the input data in the correct format.
+    >>> a = import_data('data/airports.csv', 'data/segments.csv', 'data/customers.csv', 'data/trips.csv')
+    >>> create_flight_segments(a[2])
+    []
     """
     final = {}
+    ids = {}
+    a1 = import_data('data/airports.csv', 'data/segments.csv',
+                     'data/customers.csv', 'data/trips.csv')
+    airp = create_airports(a1[0])
+    for airport in airp:
+        ids[airport.get_airport_id()] = airport.get_location()
     for line in log:
+        date1 = datetime.datetime
+        date22 = datetime.datetime
         a = line[3]
         dep = line[4]
         arr = line[5]
-        final[int(a[:4]), int(a[5:7]), int(a[8:])] = FlightSegment(line[0], datetime.datetime(int(a[:4]),int(a[])))
+        date1 = datetime.datetime(int(a[:4]), int(a[5:7]), int(a[8:]),
+                                  int(dep[:2]), int(dep[3:]))
+        if int(dep[:2]) >= int(arr[:2]):
+            # if the return flight ends up not being in the same day
+            if not MONTH_DAYS[date1.month] == date1.day:
+                # if it isn't the last day of the month
+                date22 = datetime.datetime(int(a[:4]), int(a[5:7]),
+                                           int(a[8:]) + 1, int(arr[:2]),
+                                           int(arr[3:]))
+            else:
+                # if it is the last day of the month
+                date22 = datetime.datetime(int(a[:4]), int(a[5:7]) + 1, 1,
+                                           int(arr[:2]), int(arr[3:]))
 
+        elif int(dep[:2]) < int(arr[:2]):
+            # if it lands the same day
+            date22 = datetime.datetime(int(a[:4]), int(a[5:7]), int(a[8:]),
+                                      int(arr[:2]), int(arr[3:]))
+
+        if not datetime.date(int(a[:4]), int(a[5:7]), int(a[8:])) in final:
+            # if the date doesn't already exist in the dic
+            final[datetime.date(int(a[:4]), int(a[5:7]), int(a[8:]))] = \
+                [FlightSegment(line[0], date1, date22, DEFAULT_BASE_COST,
+                               float(line[6]), line[1], line[2],
+                               (ids[line[1]], ids[line[2]]))]
+        else:
+            # if it already does
+            final[datetime.date(int(a[:4]), int(a[5:7]), int(a[8:]))] += \
+                [FlightSegment(line[0], date1, date22, DEFAULT_BASE_COST,
+                               float(line[6]), line[1], line[2],
+                               (ids[line[1]], ids[line[2]]))]
+    return final
 
 
 def create_airports(log: List[List[str]]) -> List[Airport]:
