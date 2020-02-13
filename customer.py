@@ -85,22 +85,31 @@ class Customer:
     def __init__(self, cus_id: int, name: str, age: int, nat: str) -> None:
         """ A Customer of Python Air. """
 
-        # TODO
+        self.name = name
+        self.age = age
+        self.name = nat
+        self._customer_id = cus_id
+        self.all_flight_costs = 0.0
+        self._trips = {}
+        self._ff_status = ''
+        self._miles = 0
 
     def get_id(self) -> int:
         """ Returns this customer's identification (ID). """
 
-        # TODO
+        return self._customer_id
 
     def get_trips(self) -> List[Trip]:
         """ Returns a list of Trips booked for this customer. """
-
-        # TODO
+        final = []
+        for trip in self._trips:
+            final.append(trip)
+        return final
 
     def get_total_flight_costs(self) -> float:
         """ Returns this customer's total flight costs. """
 
-        # TODO
+        return self.all_flight_costs
 
     def get_cost_of_trip(self, trip_lookup: Trip) -> Optional[float]:
         """ Returns the cost of that Trip, otherwise None. """
@@ -110,12 +119,12 @@ class Customer:
     def get_ff_status(self) -> str:
         """ Returns this customer's frequent flyer status. """
 
-        # TODO
+        return self._ff_status
 
     def get_miles(self) -> int:
         """ Returns this customer's qualifying miles. """
 
-        # TODO
+        return self._miles
 
     def book_trip(self, reservation_id: str,
                   segments: List[Tuple[FlightSegment, str]],

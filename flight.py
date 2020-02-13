@@ -108,7 +108,7 @@ class FlightSegment:
                 datetime.time(arr.hour-dep.hour, abs(arr.minute-dep.minute),
                               abs(arr.second - dep.second))
         if arr.day > dep.day and not (24 - dep.hour) + arr.hour == 24:
-            # if they are in two different days and not 24
+            # if they are in two different days and not 24]
             self._flight_duration = \
                 datetime.time((24 - dep.hour) +
                               arr.hour, abs(arr.minute - dep.minute),

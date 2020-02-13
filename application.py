@@ -31,8 +31,6 @@ AIRPORT_LOCATIONS = {}
 
 # DEFAULT_BASE_COST: Default rate per km for the base cost of a flight segment.
 DEFAULT_BASE_COST = 0.1225
-MONTH_DAYS = {1: 31, 2: 28, 3: 31, 4: 30, 5: 31, 6: 30, 7: 31, 8: 31, 9: 30,
-              10: 31, 11: 30, 12: 31}
 
 
 def import_data(file_airports: str, file_customers: str, file_segments: str,
@@ -78,7 +76,6 @@ def create_customers(log: List[List[str]]) -> Dict[int, Customer]:
     #TODO
 
 
-
 def create_flight_segments(log: List[List[str]])\
         -> Dict[datetime.date, List[FlightSegment]]:
     """ Returns a dictionary storing all FlightSegments, indexed by their
@@ -86,10 +83,13 @@ def create_flight_segments(log: List[List[str]])\
 
     Precondition:
     - The <log> list contains the input data in the correct format.
-    >>> a = import_data('data/airports.csv', 'data/segments.csv', 'data/customers.csv', 'data/trips.csv')
+    >>> a = import_data('data/airports.csv', 'data/segments.csv',
+    'data/customers.csv', 'data/trips.csv')
     >>> create_flight_segments(a[2])
     []
     """
+    month_days = {1: 31, 2: 28, 3: 31, 4: 30, 5: 31, 6: 30, 7: 31, 8: 31, 9: 30,
+                  10: 31, 11: 30, 12: 31}
     final = {}
     ids = {}
     a1 = import_data('data/airports.csv', 'data/segments.csv',
@@ -107,7 +107,7 @@ def create_flight_segments(log: List[List[str]])\
                                   int(dep[:2]), int(dep[3:]))
         if int(dep[:2]) >= int(arr[:2]):
             # if the return flight ends up not being in the same day
-            if not MONTH_DAYS[date1.month] == date1.day:
+            if not month_days[date1.month] == date1.day:
                 # if it isn't the last day of the month
                 date22 = datetime.datetime(int(a[:4]), int(a[5:7]),
                                            int(a[8:]) + 1, int(arr[:2]),
@@ -143,7 +143,8 @@ def create_airports(log: List[List[str]]) -> List[Airport]:
 
     Precondition:
     - The <log> list contains the input data in the correct format.
-    >>> a = import_data('data/airports.csv', 'data/segments.csv', 'data/customers.csv', 'data/trips.csv')
+    >>> a = import_data('data/airports.csv', 'data/segments.csv',
+    'data/customers.csv', 'data/trips.csv')
     >>> create_airports(a[0])
     []
     """
