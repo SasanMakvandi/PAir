@@ -71,9 +71,15 @@ def create_customers(log: List[List[str]]) -> Dict[int, Customer]:
 
     Precondition:
         - The <log> list contains the input data in the correct format.
+    >>> a = import_data('data/airports.csv', 'data/segments.csv','data/customers.csv', 'data/trips.csv')
+    >>> create_customers(a[1])
+    []
     """
-
-    #TODO
+    final = {}
+    for line in log:
+        final[int(line[0])] = Customer(int(line[0]), line[1], int(line[2]),
+                                       line[3])
+    return final
 
 
 def create_flight_segments(log: List[List[str]])\
