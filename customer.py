@@ -138,7 +138,9 @@ class Customer:
                           the <segments>.
         """
 
+        pass
         # TODO
+        # get back to this when you get to task 3
 
     def cancel_trip(self, canceled_trip: Trip,
                     segments: List[Tuple[FlightSegment, str]]) -> None:

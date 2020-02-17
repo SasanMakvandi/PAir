@@ -156,7 +156,7 @@ def create_airports(log: List[List[str]]) -> List[Airport]:
     """
     final = []
     for line in log:
-        final.append(Airport(line[0],line[1], (float(line[2]), float(line[3]))))
+        final.append(Airport(line[0], line[1], (float(line[2]), float(line[3]))))
     return final
 
 
@@ -171,9 +171,44 @@ def load_trips(log: List[List[str]], customer_dict: Dict[int, Customer],
     indexed by their customer ID.
     - the flight segments are already correctly stored in the <flight_segments>,
     indexed by their departure date
+    >>> a = import_data('data/airports.csv', 'data/segments.csv','data/customers.csv', 'data/trips.csv')
+    >>> b = create_customers(a[1])
+    >>> c = create_flight_segments(a[2])
+    >>> load_trips(a[3], b ,c)
+    []
     """
+    final = []
+    for line in log:
+        booking_id = line[0]
+        customer_id = int(line[1])
+        dod = datetime.date(int(line[2][:4]), int(line[2][5:7]),
+                                int(line[2][8:]))
+        # extracting the arrivals and departures for
+        temp_inter = []
+        for i in range(len(line) - 1):
+            if i >= 3 and i % 2 != 0:
+                #if we are at the right index and odd i
+                if i == 3:
+                #if we are at the very first dep
+                    temp_inter.append((line[i][3:6], line[i+2][2:5]))
+                elif not (i + 2 > len(line) - 1) and not (i+2 > len(line)-1):
+                #if we are at an odd index and this is not the last dep
+                    temp_inter.append((line[i][2:5], line[i+2][2:5]))
+        second_list = []
+        for flight in flight_segments[dod]:
+            #parsing through all the flights
+            for segs in temp_inter:
+                #parsing through my segments for this trip
+                if flight.get_dep() == segs[0] and flight.get_arr() == segs[1]:
+                    #if the arrivals and deps match
+                    second_list.append(flight)
+        final.append(Trip(booking_id, customer_id, dod, second_list))
+    return final
 
-    # TODO
+
+
+
+
 
 
 if __name__ == '__main__':

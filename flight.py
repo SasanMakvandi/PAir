@@ -103,7 +103,8 @@ class FlightSegment:
         self._dep_loc = dep_loc
         self._arr_loc = arr_loc
         self._long_lat = long_lat
-        if arr.day == dep.day: #if they are in the same day
+        if arr.day == dep.day:
+            # if they are in the same day
             self._flight_duration =\
                 datetime.time(arr.hour-dep.hour, abs(arr.minute-dep.minute),
                               abs(arr.second - dep.second))
