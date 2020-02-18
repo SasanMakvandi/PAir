@@ -206,11 +206,6 @@ def load_trips(log: List[List[str]], customer_dict: Dict[int, Customer],
     return final
 
 
-
-
-
-
-
 if __name__ == '__main__':
     print("\n---------------------------------------------")
     print("Reading in all data! Processing...")

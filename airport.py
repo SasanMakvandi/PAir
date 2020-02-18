@@ -64,6 +64,7 @@ class Airport:
 
         return self._map_location
 
+
 if __name__ == '__main__':
     import python_ta
 

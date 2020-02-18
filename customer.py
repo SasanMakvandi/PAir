@@ -113,8 +113,10 @@ class Customer:
 
     def get_cost_of_trip(self, trip_lookup: Trip) -> Optional[float]:
         """ Returns the cost of that Trip, otherwise None. """
-
-        # TODO
+        total = 0
+        for seg in trip_lookup.get_flight_segments():
+            total += seg.get_length() * \
+                           FREQUENT_FLYER_MULTIPLIER[seg.]
 
     def get_ff_status(self) -> str:
         """ Returns this customer's frequent flyer status. """
@@ -125,6 +127,20 @@ class Customer:
         """ Returns this customer's qualifying miles. """
 
         return self._miles
+
+    def determine_ff_status(self):
+        """
+        determines the ff status
+        """
+        if self.get_miles() > 15000:
+            self._ff_status = "Prestige"
+        elif self.get_miles() > 30000:
+            self._ff_status = "Elite-Light"
+        elif self.get_miles() > 50000:
+            self._ff_status = "Elite-Regular"
+        elif self.get_miles() > 100000:
+            self._ff_status = " Super-Elite"
+
 
     def book_trip(self, reservation_id: str,
                   segments: List[Tuple[FlightSegment, str]],
@@ -137,10 +153,25 @@ class Customer:
             Precondition: the customer is guaranteed to have a seat on each of
                           the <segments>.
         """
-
-        pass
-        # TODO
-        # get back to this when you get to task 3
+        temp = []
+        for segi in segments:
+            # list of the segments
+            temp.append(segi[0])
+            # actual miles of this segment
+            self._miles += segi[0].get_length() * \
+                           FREQUENT_FLYER_MULTIPLIER[segi[1]]
+            # actual cost of this segment
+            cost = segi[0].get_base_fare_cost() \
+                                     * CLASS_MULTIPLIER[segi[1]]
+            # checking the status to see if there is actually one or not
+            if not self._ff_status == '':
+                cost -= FREQUENT_FLYER_STATUS[self._ff_status][1]
+            # updating the total cost
+            self.all_flight_costs += cost
+            # updating the manifest
+            segi[0]._manifest.append((self._customer_id, segi[1]))
+        final = Trip(reservation_id, self._customer_id, trip_date, temp)
+        return final
 
     def cancel_trip(self, canceled_trip: Trip,
                     segments: List[Tuple[FlightSegment, str]]) -> None:
@@ -153,7 +184,7 @@ class Customer:
                           customer has booked.
         """
 
-        # TODO
+        self.all_flight_costs -= 1
 
 
 if __name__ == '__main__':

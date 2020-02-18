@@ -172,33 +172,39 @@ class FlightSegment:
         """ Returns True if a certain customer <cid> has booked a seat
             on this specific flight, otherwise False.
         """
-
-        # TODO
+        for cus in self._manifest:
+            if cus[0] == cid:
+                return True
+        return False
 
     def check_seat_class(self, cid: int) -> Optional[str]:
         """ Checks the manifest to see what class of cabin a certain customer
             (based on their <cid>) has booked. None is returned in the event
             there is no seat booked for that <cid>.
         """
-
-        # TODO
+        for cus in self._manifest:
+            if cus[0] == cid:
+                return cus[1]
+            else:
+                return None
 
     def book_seat(self, cid: int, seat_type: str) -> None:
         """ Book a seat of the given <seat_type> for the customer <cid>.
             If that customer is already booked, do nothing. If the seat
             type is different, and it is available, make the change.
         """
-
-        # TODO
+        if not self.seat_availability[seat_type] == self.seat_capacity[seat_type]:
+            self._manifest.append((cid, seat_type))
+            self.seat_availability[seat_type] += 1
 
     def cancel_seat(self, cid: int) -> None:
         """	If a seat has already been booked by <cid>, cancel the booking
             and restore the seat's availability. Otherwise, do nothing and
             return None.
         """
-
-        # TODO
-
+        for i in range(len(self._manifest)-1):
+            if self._manifest[i][0] == cid:
+                self._manifest.pop(i)
 
 # ------------------------------------------------------------------------------
 class Trip:
@@ -244,16 +250,22 @@ class Trip:
         """ Returns the amount of time (in minutes) the trip is spent in
             flight (i.e. the time in the air only).
         """
-
-        # TODO
+        total = 0
+        for seg in self._flights:
+            total += seg.get_duration()
+        return total
 
     def get_total_trip_time(self) -> int:
         """ Returns the amount of time (in minutes) the trip is takes,
             including all transit time (i.e. including waiting for the next
             flight on a layover).
         """
-
-        # TODO
+        total = 0
+        total += self.get_total_trip_time()
+        for i in range(len(self._flights)-2):
+            total += self._flights[i+1].get_times()[1] - \
+                     self._flights[i].get_times()[0]
+        return total
 
 
 if __name__ == '__main__':
