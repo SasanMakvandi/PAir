@@ -113,10 +113,15 @@ class Customer:
 
     def get_cost_of_trip(self, trip_lookup: Trip) -> Optional[float]:
         """ Returns the cost of that Trip, otherwise None. """
-        total = 0
+        total = 0.0
+        percent = 0
+        if not self._ff_status == '':
+            percent = abs(FREQUENT_FLYER_STATUS[self._ff_status][1])/100
         for seg in trip_lookup.get_flight_segments():
-            total += seg.get_length() * \
-                           FREQUENT_FLYER_MULTIPLIER[seg.]
+            status = seg.check_seat_class(self._customer_id)
+            total += (seg.get_base_fare_cost() * CLASS_MULTIPLIER[status]) * \
+                     percent
+        return total
 
     def get_ff_status(self) -> str:
         """ Returns this customer's frequent flyer status. """
@@ -141,7 +146,6 @@ class Customer:
         elif self.get_miles() > 100000:
             self._ff_status = " Super-Elite"
 
-
     def book_trip(self, reservation_id: str,
                   segments: List[Tuple[FlightSegment, str]],
                   trip_date: datetime.date) -> Trip:
@@ -154,6 +158,7 @@ class Customer:
                           the <segments>.
         """
         temp = []
+        percent = 0.0
         for segi in segments:
             # list of the segments
             temp.append(segi[0])
@@ -165,11 +170,13 @@ class Customer:
                                      * CLASS_MULTIPLIER[segi[1]]
             # checking the status to see if there is actually one or not
             if not self._ff_status == '':
-                cost -= FREQUENT_FLYER_STATUS[self._ff_status][1]
+                percent = abs(FREQUENT_FLYER_STATUS[self._ff_status][1]) / 100
             # updating the total cost
-            self.all_flight_costs += cost
+            self.all_flight_costs += cost * percent
             # updating the manifest
-            segi[0]._manifest.append((self._customer_id, segi[1]))
+            segi[0].book_seat(self._customer_id, segi[1])
+        # updating the ff status
+        self.determine_ff_status()
         final = Trip(reservation_id, self._customer_id, trip_date, temp)
         return final
 
@@ -183,8 +190,19 @@ class Customer:
             Precondition: the <canceled_trip> must be a valid Trip that this
                           customer has booked.
         """
-
-        self.all_flight_costs -= 1
+        temp = []
+        percent = 0.0
+        for flight in segments:
+            if flight in canceled_trip.get_flight_segments():
+                temp.append(flight)
+        for segi in temp:
+            cost = segi[0].get_base_fare_cost() \
+                   * CLASS_MULTIPLIER[segi[1]]
+            if not self._ff_status == '':
+                percent = abs(FREQUENT_FLYER_STATUS[self._ff_status][1]) / 100
+                cost = cost * percent
+            self.all_flight_costs -= cost + 100
+            segi[0].cancel_seat(self._customer_id)
 
 
 if __name__ == '__main__':

@@ -96,6 +96,7 @@ class FlightSegment:
         >>> d.get_base_fare_cost()
         200.0
         """
+        self.seat_availability = {"Business": 0, "Economy": 0}
         self.seat_capacity = AIRPLANE_CAPACITY
         self._flight_id = fid
         self._time = (dep, arr)

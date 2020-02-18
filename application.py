@@ -187,22 +187,25 @@ def load_trips(log: List[List[str]], customer_dict: Dict[int, Customer],
         temp_inter = []
         for i in range(len(line) - 1):
             if i >= 3 and i % 2 != 0:
-                #if we are at the right index and odd i
+                # if we are at the right index and odd i
                 if i == 3:
-                #if we are at the very first dep
-                    temp_inter.append((line[i][3:6], line[i+2][2:5]))
+                    # if we are at the very first dep
+                    temp_inter.append(((line[i][3:6], line[i+2][2:5]),
+                                       line[i+1][1:-2]))
                 elif not (i + 2 > len(line) - 1) and not (i+2 > len(line)-1):
-                #if we are at an odd index and this is not the last dep
-                    temp_inter.append((line[i][2:5], line[i+2][2:5]))
+                    # If we are at an odd index and this is not the last dep
+                    temp_inter.append(((line[i][2:5], line[i+2][2:5]),
+                                       line[i+1][1:-2]))
         second_list = []
         for flight in flight_segments[dod]:
-            #parsing through all the flights
+            # parsing through all the flights
             for segs in temp_inter:
-                #parsing through my segments for this trip
-                if flight.get_dep() == segs[0] and flight.get_arr() == segs[1]:
-                    #if the arrivals and deps match
-                    second_list.append(flight)
-        final.append(Trip(booking_id, customer_id, dod, second_list))
+                # parsing through my segments for this trip
+                if flight.get_dep() == segs[0][0] and flight.get_arr() == segs[0][1]:
+                    # if the arrivals and deps match
+                    second_list.append((flight, segs[1]))
+        final.append(customer_dict[customer_id].book_trip(booking_id,
+                                                          second_list, dod))
     return final
 
 
