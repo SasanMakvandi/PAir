@@ -1,0 +1,15 @@
+I, Sasan Makvandi declare that I have not committed an Academic Offence on this assignment.
+
+Specifically:
+
+    I have read the University of Toronto's Code of Behaviour on Academic Matters and am aware of what constitutes plagiarism.
+    No code other than my own (plus starter code) has been submitted.
+    I have not received any pieces of code from others (including test cases).
+    I have not obtained pieces of code available publicly, nor modified such code to pass as my own work.
+    I have not shared any parts of my code with others (including test cases), nor shared specific details on how others may reproduce similar code.
+    I did not instruct another classmate on what to write in their assignment code.
+    I did not receive instruction on specifically what to write in my code, and have come up with the solution myself
+    I did not look for assignment solutions online.
+    I did not attend private tutoring sessions (including in other languages) which are not explicitly sanctioned by UTM where the assignment was discussed.
+    I did not post my own code publicly online on places like GitHub, pastebin, StackOverflow, etc.
+    I acknowledge that this declaration is truthful and does not include any misrepresentation. I acknowledge that not being able to explain in detail my own work will result in a zero on this assignment, and that if the code is detected to be plagiarized, severe academic penalties will be applied when the case is brought forward to the Dean.
