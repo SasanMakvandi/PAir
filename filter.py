@@ -62,9 +62,12 @@ class ResetFilter(Filter):
             The <data>, <customers>, and <filter_string> arguments for this
             type of filter are ignored.
         """
-
-        # TODO
-        return data
+        final = []
+        for cus in customers:
+            for trip in cus.get_trips():
+                for seg in trip.get_flight_segments():
+                    final.append(seg)
+        return final
 
     def __str__(self) -> str:
         """ Returns a description of this filter to be displayed in the UI menu.
@@ -89,9 +92,21 @@ class CustomerFilter(Filter):
               1. return the original list <data>, and
               2. ensure your code does not crash.
         """
-
-        # TODO
-        return data
+        NUMS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+        for el in filter_string:
+            if el not in NUMS:
+                return data
+        final = []
+        temp_list = []
+        for cus in customers:
+            if cus.get_id() == int(filter_string):
+                for trip in cus.get_trips():
+                    for seg in trip.get_flight_segments():
+                        temp_list.append(seg)
+        for flight in data:
+            if flight in temp_list:
+                final.append(flight)
+        return final
 
     def __str__(self) -> str:
         """ Returns a description of this filter to be displayed in the UI menu.
@@ -120,9 +135,29 @@ class DurationFilter(Filter):
               1. return the original list <data>, and
               2. ensure your code does not crash.
         """
-
-        # TODO
-        return data
+        final = []
+        NUMS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+        if ((filter_string[:1] != 'L') or (filter_string[:1] != 'G')) \
+                and len(filter_string[1:]) != 4:
+            return data
+        for el in filter_string[1:]:
+            if el not in NUMS:
+                return data
+        time = filter_string[:1]
+        mins = int(filter_string[1:])
+        if time == 'L':
+            for flight in data:
+                time2 = int(flight.get_duration().hour * 60 +
+                            flight.get_duration().minute)
+                if time2 < mins:
+                    final.append(flight)
+        elif time == 'G':
+            for flight in data:
+                time2 = int(flight.get_duration().hour * 60 +
+                            flight.get_duration().minute)
+                if time2 > mins:
+                    final.append(flight)
+        return final
 
     def __str__(self) -> str:
         """ Returns a description of this filter to be displayed in the UI menu
@@ -150,9 +185,22 @@ class LocationFilter(Filter):
               1. return the original list <data>, and
               2. your code must not crash.
         """
-
-        # TODO
-        return data
+        final = []
+        airports = []
+        for cus in customers:
+            for trips in cus.get_trips():
+                for seg in trips.get_flight_segments():
+                    airports.append(seg.get_arr())
+                    airports.append(seg.get_dep())
+        for el in filter_string:
+            if not isinstance(el, str):
+                return data
+        if len(filter_string) == 3 and filter_string in airports:
+            for flight in data:
+                if flight.get_dep() == filter_string or flight.get_arr() == \
+                        filter_string:
+                    final.append(flight)
+        return final
 
     def __str__(self) -> str:
         """ Returns a description of this filter to be displayed in the UI menu.
@@ -185,9 +233,38 @@ class DateFilter(Filter):
               1. return the original list <data>, and
               2. ensure your code does not crash.
         """
+        ints = [[filter_string[:4], filter_string[5:7], filter_string[8:10],
+                 filter_string[11:15], filter_string[16:18],
+                 filter_string[19:]],
+                ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']]
+        for el in ints[0]:
+            for num in el:
+                if num not in ints[1]:
+                    return data
+        if not((filter_string[4:5] == '-' or ' ') and
+               (filter_string[7:8] == '-' or ' ') and
+               (filter_string[10:11] == '/' or ',' or ' ') and
+               (filter_string[15:16] == '-' or ' ') and
+               (filter_string[18:19] == '-' or ' ')):
+            return data
 
-        # TODO
-        return data
+        import datetime
+        final = []
+        date1 = datetime.date(int(filter_string[:4]), int(filter_string[5:7]),
+                              int(filter_string[8:10]))
+        date2 = datetime.date(int(filter_string[11:15]),
+                              int(filter_string[16:18]),
+                              int(filter_string[19:]))
+        for flights in data:
+            aar = datetime.date(flights.get_times()[1].year,
+                                flights.get_times()[1].month,
+                                flights.get_times()[1].day)
+            dep = datetime.date(flights.get_times()[0].year,
+                                flights.get_times()[0].month,
+                                flights.get_times()[0].day)
+            if date1 <= aar <= date2 or date1 <= dep <= date2:
+                final.append(flights)
+        return final
 
     def __str__(self) -> str:
         """ Returns a description of this filter to be displayed in the UI menu.
@@ -213,9 +290,22 @@ class TripFilter(Filter):
               1. return the original list <data>, and
               2. ensure your code does not crash.
         """
-
-        # TODO
-        return data
+        allowed = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
+                   'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
+                   'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+        for el in filter_string:
+            if el not in allowed:
+                return data
+        final = []
+        temp = []
+        for cus in customers:
+            for trips in cus.get_trips():
+                if trips.get_reservation_id() == filter_string:
+                    temp += trips.get_flight_segments()
+        for segment in data:
+            if segment in temp:
+                final.append(segment)
+        return final
 
     def __str__(self) -> str:
         """ Returns a description of this filter to be displayed in the UI menu.

@@ -109,7 +109,7 @@ class FlightSegment:
             self._flight_duration =\
                 datetime.time(arr.hour-dep.hour, abs(arr.minute-dep.minute),
                               abs(arr.second - dep.second))
-        if arr.day > dep.day and not (24 - dep.hour) + arr.hour == 24:
+        elif arr.day > dep.day and not (24 - dep.hour) + arr.hour == 24:
             # if they are in two different days and not 24]
             self._flight_duration = \
                 datetime.time((24 - dep.hour) +
@@ -118,8 +118,10 @@ class FlightSegment:
         elif arr.day > dep.day and (24 - dep.hour) + arr.hour == 24:
             # if they don't add up to 24
             self._flight_duration = \
-                datetime.time(0, abs(arr.minute - dep.minute),
+                datetime.time(23, abs(arr.minute - dep.minute),
                               abs(arr.second - dep.second))
+        else:
+            self._flight_duration = datetime.time()
         self._flight_length = length
         self._manifest = []
 

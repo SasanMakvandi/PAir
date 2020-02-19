@@ -249,7 +249,7 @@ def load_trips(log: List[List[str]], customer_dict: Dict[int, Customer],
         imdone = customer_dict[customer_id].book_trip(booking_id,
                                                           second_list, dod)
         if second_list != []:
-            final.append((imdone.get_flight_segments(), imdone.get_reservation_id()))
+            final.append(imdone)
     return final
 
 
