@@ -160,6 +160,53 @@ def create_airports(log: List[List[str]]) -> List[Airport]:
     return final
 
 
+def choose_flights(flight_segments: Dict[datetime.date, List[FlightSegment]],
+                   temp_inter: List[Tuple[Tuple[str, str], str]],
+                   date: datetime.date) -> List[Tuple[FlightSegment, str]]:
+    """
+    Help-Function
+    """
+    month_days = {1: 31, 2: 28, 3: 31, 4: 30, 5: 31, 6: 30, 7: 31, 8: 31, 9: 30,
+                  10: 31, 11: 30, 12: 31}
+    final = []
+    segos = len(temp_inter)
+    if date not in flight_segments:
+        return []
+    for flight in flight_segments[date]:
+        # parsing through all the flights
+        for segs in temp_inter:
+            # parsing through my segments for this trip
+            if flight.get_dep() == segs[0][0] and flight.get_arr() == \
+                    segs[0][1]:
+                # if the departure and arivaal are the same
+                if not final:
+                    # if it is the first flight to be added
+                    final.append((flight, segs[1]))
+                    # remove from the segment from the list
+                    temp_inter.remove(segs)
+                elif final != [] and flight.get_times()[0] >= final[-1][0].get_times()[1]:
+                    # if the flight is not the first segment
+                    final.append((flight, segs[1]))
+                    # remove from the list
+                    temp_inter.remove(segs)
+    if len(final) == segos:
+        # if the length of the final and inter are the same
+        return final
+    else:
+        # if it is not the same
+        new_date: datetime.date
+        if month_days[date.month] == date.day:
+            new_date = datetime.date(date.year, date.month + 1, 1)
+        else:
+            new_date = datetime.date(date.year, date.month, date.day + 1)
+        # the new date
+        final += choose_flights(flight_segments, temp_inter, new_date)
+        if len(final) == segos:
+            return final
+        else:
+            return []
+
+
 def load_trips(log: List[List[str]], customer_dict: Dict[int, Customer],
                flight_segments: Dict[datetime.date, List[FlightSegment]]) \
         -> List[Trip]:
@@ -171,7 +218,7 @@ def load_trips(log: List[List[str]], customer_dict: Dict[int, Customer],
     indexed by their customer ID.
     - the flight segments are already correctly stored in the <flight_segments>,
     indexed by their departure date
-    >>> a = import_data('data/airports.csv', 'data/segments.csv','data/customers.csv', 'data/trips.csv')
+    >>> a = import_data('data/airports.csv', 'data/segments.csv','data/customers.csv', 'data/trips_small.csv')
     >>> b = create_customers(a[1])
     >>> c = create_flight_segments(a[2])
     >>> load_trips(a[3], b ,c)
@@ -196,16 +243,13 @@ def load_trips(log: List[List[str]], customer_dict: Dict[int, Customer],
                     # If we are at an odd index and this is not the last dep
                     temp_inter.append(((line[i][2:5], line[i+2][2:5]),
                                        line[i+1][1:-2]))
-        second_list = []
-        for flight in flight_segments[dod]:
-            # parsing through all the flights
-            for segs in temp_inter:
-                # parsing through my segments for this trip
-                if flight.get_dep() == segs[0][0] and flight.get_arr() == segs[0][1]:
-                    # if the arrivals and deps match
-                    second_list.append((flight, segs[1]))
-        final.append(customer_dict[customer_id].book_trip(booking_id,
-                                                          second_list, dod))
+        # everything works fine until here
+
+        second_list = choose_flights(flight_segments, temp_inter, dod)
+        imdone = customer_dict[customer_id].book_trip(booking_id,
+                                                          second_list, dod)
+        if second_list != []:
+            final.append((imdone.get_flight_segments(), imdone.get_reservation_id()))
     return final
 
 
