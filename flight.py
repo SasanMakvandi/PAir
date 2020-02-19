@@ -81,20 +81,6 @@ class FlightSegment:
                  long_lat: Tuple[Tuple[float, float],
                                  Tuple[float, float]]) -> None:
         """ Initialize a FlightSegment object based on the parameters specified.
-        >>> a = FlightSegment('AC100', datetime.datetime(2020, 2, 11, 16,40,00 ), datetime.datetime(2020, 2, 11, 17,40,00), 1.00, 200, 'YYZ', 'IRC', ((1,2), (2,3)))
-        >>> a.get_duration()
-        datetime.time(1, 0)
-        >>> b = FlightSegment('AC100', datetime.datetime(2020, 2, 11, 16,40,00 ), datetime.datetime(2020, 2, 11, 22,40,00), 1.00, 200, 'YYZ', 'IRC', ((1,2), (2,3)))
-        >>> b.get_duration()
-        datetime.time(6, 0)
-        >>> c = FlightSegment('AC100', datetime.datetime(2020, 2, 11, 22, 40, 00), datetime.datetime(2020, 2, 12, 2, 40, 00),1.00, 200, 'YYZ', 'IRC', ((1,2), (2,3)))
-        >>> c.get_duration()
-        datetime.time(4, 0)
-        >>> d = FlightSegment('AC100', datetime.datetime(2020, 2, 11, 18, 20, 00), datetime.datetime(2020, 2, 12, 2, 40, 00),1.00, 200, 'YYZ', 'IRC', ((1,2), (2,3)))
-        >>> d.get_duration()
-        datetime.time(8, 20)
-        >>> d.get_base_fare_cost()
-        200.0
         """
         self.seat_availability = {"Business": 0, "Economy": 0}
         self.seat_capacity = AIRPLANE_CAPACITY
@@ -188,15 +174,15 @@ class FlightSegment:
         for cus in self._manifest:
             if cus[0] == cid:
                 return cus[1]
-            else:
-                return None
+        return None
 
     def book_seat(self, cid: int, seat_type: str) -> None:
         """ Book a seat of the given <seat_type> for the customer <cid>.
             If that customer is already booked, do nothing. If the seat
             type is different, and it is available, make the change.
         """
-        if not self.seat_availability[seat_type] == self.seat_capacity[seat_type]:
+        if not self.seat_availability[seat_type] \
+               == self.seat_capacity[seat_type]:
             self._manifest.append((cid, seat_type))
             self.seat_availability[seat_type] += 1
 
@@ -208,6 +194,7 @@ class FlightSegment:
         for i in range(len(self._manifest)-1):
             if self._manifest[i][0] == cid:
                 self._manifest.pop(i)
+
 
 # ------------------------------------------------------------------------------
 class Trip:

@@ -126,7 +126,7 @@ def create_flight_segments(log: List[List[str]])\
         elif int(dep[:2]) < int(arr[:2]):
             # if it lands the same day
             date22 = datetime.datetime(int(a[:4]), int(a[5:7]), int(a[8:]),
-                                      int(arr[:2]), int(arr[3:]))
+                                       int(arr[:2]), int(arr[3:]))
 
         if not datetime.date(int(a[:4]), int(a[5:7]), int(a[8:])) in final:
             # if the date doesn't already exist in the dic
@@ -156,7 +156,8 @@ def create_airports(log: List[List[str]]) -> List[Airport]:
     """
     final = []
     for line in log:
-        final.append(Airport(line[0], line[1], (float(line[2]), float(line[3]))))
+        final.append(Airport(line[0], line[1], (float(line[2]),
+                                                float(line[3]))))
     return final
 
 
@@ -184,7 +185,8 @@ def choose_flights(flight_segments: Dict[datetime.date, List[FlightSegment]],
                     final.append((flight, segs[1]))
                     # remove from the segment from the list
                     temp_inter.remove(segs)
-                elif final != [] and flight.get_times()[0] >= final[-1][0].get_times()[1]:
+                elif final != [] and flight.get_times()[0] >= \
+                        final[-1][0].get_times()[1]:
                     # if the flight is not the first segment
                     final.append((flight, segs[1]))
                     # remove from the list
@@ -229,7 +231,7 @@ def load_trips(log: List[List[str]], customer_dict: Dict[int, Customer],
         booking_id = line[0]
         customer_id = int(line[1])
         dod = datetime.date(int(line[2][:4]), int(line[2][5:7]),
-                                int(line[2][8:]))
+                            int(line[2][8:]))
         # extracting the arrivals and departures for
         temp_inter = []
         for i in range(len(line) - 1):
@@ -239,7 +241,7 @@ def load_trips(log: List[List[str]], customer_dict: Dict[int, Customer],
                     # if we are at the very first dep
                     temp_inter.append(((line[i][3:6], line[i+2][2:5]),
                                        line[i+1][1:-2]))
-                elif not (i + 2 > len(line) - 1) and not (i+2 > len(line)-1):
+                elif not (i + 2 > len(line) - 1) and not i+2 > len(line)-1:
                     # If we are at an odd index and this is not the last dep
                     temp_inter.append(((line[i][2:5], line[i+2][2:5]),
                                        line[i+1][1:-2]))
@@ -247,7 +249,7 @@ def load_trips(log: List[List[str]], customer_dict: Dict[int, Customer],
 
         second_list = choose_flights(flight_segments, temp_inter, dod)
         imdone = customer_dict[customer_id].book_trip(booking_id,
-                                                          second_list, dod)
+                                                      second_list, dod)
         if second_list != []:
             final.append(imdone)
     return final

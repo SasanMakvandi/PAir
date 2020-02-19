@@ -128,7 +128,7 @@ class Customer:
 
         return self._miles
 
-    def determine_ff_status(self):
+    def determine_ff_status(self) -> None:
         """
         determines the ff status
         """
